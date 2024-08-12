@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	id="WebApp_ID" version="3.1">
+
+	<!-- LoginServlet 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>com.smile.www.controller.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/loginPage</url-pattern>
+	</servlet-mapping>
+
+	<!-- LogoutServlet 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>com.smile.www.controller.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/logout.user</url-pattern>
+	</servlet-mapping>
+
+	<!-- UserController 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>UserController</servlet-name>
+		<servlet-class>com.smile.www.controller.UserController</servlet-class>
+		<multipart-config>
+			<max-file-size>52428800</max-file-size> <!-- 50MB -->
+			<max-request-size>52428800</max-request-size> <!-- 50MB -->
+			<file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+		</multipart-config>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>UserController</servlet-name>
+		<url-pattern>*.user</url-pattern>
+	</servlet-mapping>
+
+	<!-- PhotoController 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>PhotoController</servlet-name>
+		<servlet-class>com.smile.www.controller.PhotoController</servlet-class>
+		<multipart-config>
+			<max-file-size>52428800</max-file-size> <!-- 50MB -->
+			<max-request-size>52428800</max-request-size> <!-- 50MB -->
+			<file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+		</multipart-config>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PhotoController</servlet-name>
+		<url-pattern>*.photo</url-pattern>
+	</servlet-mapping>
+
+	<!-- PostController 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>PostController</servlet-name>
+		<servlet-class>com.smile.www.controller.PostController</servlet-class>
+		<multipart-config>
+			<max-file-size>52428800</max-file-size> <!-- 50MB -->
+			<max-request-size>52428800</max-request-size> <!-- 50MB -->
+			<file-size-threshold>1048576</file-size-threshold> <!-- 1MB -->
+		</multipart-config>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PostController</servlet-name>
+		<url-pattern>*.post</url-pattern>
+	</servlet-mapping>
+
+	<!-- CommentController 서블릿 매핑 -->
+	<servlet>
+		<servlet-name>CommentController</servlet-name>
+		<servlet-class>com.smile.www.controller.CommentController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CommentController</servlet-name>
+		<url-pattern>*.comment</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- Encoding Filter -->
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>com.smile.www.filter.EncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- Session Filter -->
+	<filter>
+		<filter-name>SessionFilter</filter-name>
+		<filter-class>com.smile.www.filter.SessionFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/com/smile/www/controller/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/com/smile/www/service/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>SessionFilter</filter-name>
+		<url-pattern>/Html/*</url-pattern>
+	</filter-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- Error Pages -->
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/ErrorFile/uploadPhotoError.jsp</location>
+	</error-page>
+
+
+</web-app>
