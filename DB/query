@@ -1,0 +1,81 @@
+- 사용자 테이블
+CREATE TABLE Users (
+    no INT AUTO_INCREMENT PRIMARY KEY,   -- 사용자 식별자 (자동 증가)
+    user_id VARCHAR(20) NOT NULL UNIQUE, -- 사용자 아이디
+    username VARCHAR(50) NOT NULL UNIQUE, -- 사용자 닉네임
+    email VARCHAR(100) NOT NULL UNIQUE, -- 이메일 주소
+    password VARCHAR(255) NOT NULL,     -- 비밀번호
+    profile_image_url VARCHAR(255),     -- 프로필 이미지 경로
+    memo TEXT,                          -- 메모장 내용
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 생성 시각
+   role ENUM('USER', 'ADMIN') DEFAULT 'USER' -- 역할 (USER 또는 ADMIN)
+);
+
+- 사진 테이블
+CREATE TABLE Photos (
+    no INT AUTO_INCREMENT PRIMARY KEY,  -- 사진 식별자 (자동 증가)
+    user_no INT NOT NULL,               -- 사진을 업로드한 사용자 식별자
+    file_path VARCHAR(255) NOT NULL,    -- 사진 파일 경로
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 업로드 시각
+    camera_info VARCHAR(255),           -- 카메라 정보
+    lens_info VARCHAR(255),             -- 렌즈 정보
+    location_info VARCHAR(255),         -- 장소 정보
+    memo TEXT,                          -- 사진에 대한 메모
+    FOREIGN KEY (user_no) REFERENCES Users(no) ON DELETE CASCADE -- 사용자 테이블과의 외래키 관계
+);
+
+- 게시글 테이블
+CREATE TABLE Posts (
+    no INT AUTO_INCREMENT PRIMARY KEY,     -- 게시글 식별자 (자동 증가)
+    user_no INT NOT NULL,                  -- 게시글 작성자 식별자 (Users 테이블의 no와 외래키 관계)
+    title VARCHAR(255) NOT NULL,           -- 게시글 제목
+    content TEXT NOT NULL,                 -- 게시글 내용
+    hit INT DEFAULT 0,					   -- 조회수
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 게시글 작성 시각
+    updated_at TIMESTAMP NULL, -- 게시글 수정 시각
+    FOREIGN KEY (user_no) REFERENCES Users(no) ON DELETE CASCADE -- Users 테이블과의 외래키 관계
+);
+-- 수정 시에만 updated_at 컬럼을 업데이트하는 트리거를 생성
+DELIMITER $$
+
+CREATE TRIGGER before_update_posts
+BEFORE UPDATE ON Posts
+FOR EACH ROW
+BEGIN
+    IF NEW.hit = OLD.hit THEN
+        SET NEW.updated_at = CURRENT_TIMESTAMP;
+    END IF;
+END$$
+
+DELIMITER ;
+
+- 게시글 사진 테이블
+CREATE TABLE PostPhotos (
+    post_no INT NOT NULL,
+    photo_no INT NOT NULL AUTO_INCREMENT,
+    photo_url VARCHAR(255),
+    PRIMARY KEY (photo_no),
+    FOREIGN KEY (post_no) REFERENCES Posts(no) ON DELETE CASCADE
+);
+
+- 좋아요 테이블 
+CREATE TABLE Likes (
+    post_no INT NOT NULL,
+    user_no INT NOT NULL,
+    PRIMARY KEY (post_no, user_no),
+    FOREIGN KEY (post_no) REFERENCES Posts(no) ON DELETE CASCADE,
+    FOREIGN KEY (user_no) REFERENCES Users(no) ON DELETE CASCADE
+);
+
+- 댓글 테이블
+CREATE TABLE Comments (
+    no INT AUTO_INCREMENT PRIMARY KEY,     -- 댓글 식별자 (자동 증가)
+    post_no INT NOT NULL,                  -- 댓글이 달린 게시글 식별자 (Posts 테이블의 no와 외래키 관계)
+    user_no INT NOT NULL,                  -- 댓글 작성자 식별자 (Users 테이블의 no와 외래키 관계)
+    content TEXT NOT NULL,                 -- 댓글 내용
+    parent_no INT DEFAULT NULL,            -- 부모 댓글 식별자 (NULL이면 원댓글, 값이 있으면 리댓글)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- 댓글 작성 및 수정 시각
+    FOREIGN KEY (post_no) REFERENCES Posts(no) ON DELETE CASCADE, -- Posts 테이블과의 외래키 관계
+    FOREIGN KEY (user_no) REFERENCES Users(no) ON DELETE CASCADE, -- Users 테이블과의 외래키 관계
+    FOREIGN KEY (parent_no) REFERENCES Comments(no) ON DELETE CASCADE -- Comments 테이블과의 외래키 관계
+);
