@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+    <nav th:fragment="navBarFragment">
+        <a th:href="@{/allUserHome}" class="nav-link">Home</a>
+        <a href="@{/community}" class="nav-link">Community</a>
+        <a href="@{/mypage}" class="nav-link">My Page</a>
+        <a th:href="@{/about}" class="nav-link">About</a>
+        
+        <!-- 인증된 사용자에게만 보이는 링크 -->
+        <sec:authorize access="isAuthenticated()">
+            <a href="#" onclick="confirmLogout()" class="nav-link">LogOut</a>
+        </sec:authorize>
+        
+        <!-- 익명 사용자에게만 보이는 링크 -->
+        <sec:authorize access="isAnonymous()">
+            <a th:href="@{/loginMain}" class="nav-link">LogIn</a>
+        </sec:authorize>
+    </nav>
+     <script th:inline="javascript">
+        var isAuthenticated = /*[[${#authentication.principal != null}]]*/ false;  /* 주석처럼 보이지만 타임리프가 서버에서 처리할 때 주석이 아닌 실제값으로 처리함 > 기본동작 false*/
+        console.log("Is Authenticated: " + isAuthenticated);
+
+        // 로그아웃 확인 함수
+        function confirmLogout() {
+            if (confirm("정말 로그아웃 하시겠습니까?")) {
+                window.location.href = "/logout";
+            }
+        }
+
+        // 인증 상태에 따른 페이지 이동 함수
+        function checkAuthentication(redirectUrl) {
+            if (isAuthenticated) {
+                window.location.href = redirectUrl;
+            } else {
+                if (confirm("로그인 후 이용 가능한 페이지입니다. 로그인 페이지로 이동 하시겠습니까?")) {
+                    window.location.href = "/loginMain";
+                }
+            }
+        }
+       
+    </script>
+</body>
+</html>

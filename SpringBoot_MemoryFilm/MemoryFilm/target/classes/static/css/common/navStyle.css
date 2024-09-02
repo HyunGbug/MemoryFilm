@@ -1,0 +1,95 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box
+}
+
+body, html {
+	height: 100%
+}
+
+body {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-image: linear-gradient(to bottom, #f8f1f0 10px, #c3a6a0 10px, #c3a6a0 calc(100%
+		- 10px), #f8f1f0 calc(100% - 10px));
+	padding: 9px;
+	margin-bottom: 27px;
+	width: 100%
+}
+
+header .logo {
+	margin-left: 13.5px;
+	color: #fff;
+	font-size: 1.8rem;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, .7)
+}
+
+.logo span {
+	color: #a15c38
+}
+
+header nav {
+	display: flex;
+	justify-content: flex-end;
+	padding: 1.35rem .9rem;
+	align-items: center
+}
+
+header nav a {
+	color: #000;
+	font-size: .9rem !important;
+	text-decoration: none;
+	margin-right: 18px;
+	transition: color .3s ease
+}
+
+.nav-link.color, .nav-link:hover {
+	color: #f8f1f0
+}
+
+body footer {
+	display: flex;
+	height: 26px;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #333;
+	color: #fff;
+	padding: 8px;
+	text-align: center;
+	width: 100%;
+	font-size: 11px;
+	bottom: 0;
+	position: relative;
+}
+
+body footer p {
+	margin-bottom: 0;
+}
+
+body footer .center {
+	flex: 1;
+	text-align: center;
+	margin-left: 19%;
+}
+
+body footer .right {
+	display: flex;
+	gap: 30px;
+}
+
+body footer a {
+	color: #fff;
+	text-decoration: none;
+}
+
+body footer a:hover {
+	text-decoration: underline;
+}

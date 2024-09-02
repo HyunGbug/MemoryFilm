@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Film :: Login</title>
+<script src="https://kit.fontawesome.com/3b644b33f6.js"></script>
+<!-- tinycolor 라이브러리 로드 -->
+<script
+	src="https://cdn.jsdelivr.net/npm/tinycolor2@1.4.2/dist/tinycolor-min.js"></script>
+<link rel="icon" type="image/png" href="/imgs/favicon/favicon.png">
+</head>
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+svg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
+
+body, html {
+	height: 100%;
+	width: 100%;
+	overflow: hidden; /* 스크롤 제거 */
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #aec8fdd2;
+	color: rgba(255, 255, 255, .7);
+}
+
+button {
+	background: 0 0;
+	border: 0;
+}
+
+.theme {
+	border: 0;
+	border-radius: 8px;
+	width: calc(100% - 32px);
+	height: 45px;
+	padding: 0 16px;
+	background: rgba(4, 14, 52, .315);
+	color: #fff;
+	margin: 8px 0;
+	transition: .4s;
+	box-sizing: border-box;
+	font-size: 15px;
+}
+
+.theme.login:hover, .theme.signup:hover {
+	background-color: rgba(0, 0, 255, .734);
+}
+
+.theme.login, .theme.signup {
+	background: #0420f045;
+	cursor: pointer;
+}
+
+button.theme.home {
+	position: absolute;
+	top: 10px;
+	left: 17px;
+	width: auto;
+	background: #ffffff93;
+	color: #1f1f1f;
+	padding: 5px 16px;
+	font-size: 14px;
+	border-radius: 7px;
+	box-sizing: border-box;
+	height: 40px;
+	cursor: pointer;
+}
+
+button.theme.home:hover {
+	background-color: rgba(192, 192, 194, .366);
+	color: #fff;
+}
+
+.theme::placeholder, .toggle-password {
+	color: rgba(255, 255, 255, .567);
+}
+
+.MemberForm>button.theme.login {
+	cursor: pointer;
+	width: calc(100% - 32px);
+	background: #0420f045;
+	color: #fff;
+	border: 0;
+	font-family: inherit;
+	font-size: 18px;
+	text-align: center;
+	transition: all 375ms;
+	margin-top: 20px;
+	font-size: 20px;
+}
+
+.MemberForm>button.theme.login:hover {
+	background-color: rgba(0, 0, 255, .734)
+}
+
+.card {
+	position: relative;
+	width: 600px;
+	padding: 100px 30px 32px;
+	border-radius: 20px;
+	background: rgba(2, 48, 116, .21);
+	backdrop-filter: blur(26px);
+	text-align: center;
+}
+
+.card>h2 {
+	font-size: 36px;
+	font-weight: 600;
+	margin: 0 0 6px;
+	color: #110a76b9;
+}
+
+.card>h3 {
+	color: rgba(6, 48, 185, .744);
+	margin: 0 0 40px;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.forgot-password {
+	display: block;
+	margin-top: 10px;
+	color: rgba(255, 255, 255, .716);
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.forgot-password:hover {
+	color: #fff;
+}
+
+.password-container .toggle-password {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	font-size: 1.2em;
+	color: rgba(255, 255, 255, .567);
+}
+
+.password-container {
+	position: relative;
+	width: 100%;
+}
+
+.password-container input {
+	display: inline-block;
+}
+
+.theme.signup {
+	cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 17px;
+	width: auto;
+	background: #0420f045;
+	color: #fff;
+	padding: 5px 16px;
+	font-size: 14px;
+	border-radius: 7px;
+	box-sizing: border-box;
+	height: 40px;
+}
+
+.rememberId, rememberMe {
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.password-container .toggle-password {
+	right: 30px;
+}
+</style>
+</head>
+<body>
+	<div class="card">
+		<button class="theme home" type="button"
+			onclick="window.location.href='/allUserHome'">Home</button>
+		<h2>Log In</h2>
+		<h3>Access your account</h3>
+		<form action="/login.user" method="post" class="form">
+			<input type="text" id="id" name="id" class="theme"
+				placeholder="User ID" autocomplete="username" required>
+			<div class="password-container">
+				<input type="password" id="password" name="password" class="theme"
+					placeholder="Password" autocomplete="current-password" required>
+				<span class="toggle-password" onclick="togglePasswordVisibility()">
+					<i class="fa-sharp fa-regular fa-eye-slash" id="passwordIcon"></i>
+				</span>
+			</div>
+			<div class="strength" id="strength"></div>
+			<button type="submit" class="theme login" onclick="saveUserId()">Log
+				In</button>
+			<div>
+				<input type="checkbox" id="rememberMe" name="rememberMe"> <label
+					for="rememberMe" class="rememberId">아이디 기억하기</label>
+			</div>
+			<a href="/Html/FindUserAccount/Find_Password.jsp"
+				class="forgot-password">Forgot your Id/Password?</a>
+		</form>
+		<button class="theme signup" type="button"
+			onclick="window.location.href = '/signUp'">create
+			Account</button>
+	</div>
+
+	<!-- 모듈 스크립트로 GradientBG 클래스를 로드 -->
+	<script type="module">
+        import GradientBG from '/js/login/gradientBG.js';
+
+        // window.onload 이벤트에서 GradientBG 초기화 및 실행
+        window.onload = function() {
+            const gradient = new GradientBG();
+            gradient.generate();
+        }
+    </script>
+	<script>
+	    function togglePasswordVisibility() {
+	        const passwordInput = document.getElementById('password');
+	        const passwordIcon = document.getElementById('passwordIcon');
+	        if (passwordInput.type === 'password') {
+	            passwordInput.type = 'text';
+	            passwordIcon.classList.remove('fa-eye-slash');
+	            passwordIcon.classList.add('fa-eye');
+	        } else {
+	            passwordInput.type = 'password';
+	            passwordIcon.classList.remove('fa-eye');
+	            passwordIcon.classList.add('fa-eye-slash');
+	        }
+	    }
+
+	    // 사용자가 "아이디 기억하기"를 체크한 경우 로컬 스토리지에 아이디를 저장하는 함수
+	    function saveUserId() {
+	        const rememberMe = document.getElementById('rememberMe').checked;
+	        const userId = document.getElementById('id').value;
+	        if (rememberMe) {
+	            localStorage.setItem('savedUserId', userId);
+	        } else {
+	            localStorage.removeItem('savedUserId');
+	        }
+	    }
+	</script>
+</body>
+</html>

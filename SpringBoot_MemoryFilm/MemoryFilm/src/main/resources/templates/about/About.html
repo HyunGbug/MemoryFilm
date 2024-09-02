@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Film :: About</title>
+<link rel="stylesheet" th:href="@{/css/common/navStyle.css}">
+<link rel="icon" type="image/png" th:href="@{/imgs/favicon/favicon.png}">
+</head>
+<style>
+@import
+	url(https://webfontworld.github.io/utoImageHand/UtoImageHand.css);
+
+main {
+	font-family: UtoImageHand, sans-serif;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	letter-spacing: .06em;
+	line-height: 1.2;
+	padding: 20px
+}
+
+.content-wrapper {
+	width: 50%;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	background: rgba(246, 237, 237, .51);
+	box-shadow: 0 0 18px rgba(0, 0, 0, .3);
+	border-radius: 27px;
+	padding: 14px;
+	margin: 30px auto
+}
+
+h1 {
+	font-size: 5em
+}
+
+strong {
+	font-size: 1.5em
+}
+
+.content-wrapper p {
+	margin: 0;
+	line-height: 2.7;
+	font-size: 30px;
+	flex: 1;
+	font-size: 1.6em
+}
+
+.content-wrapper img {
+	border-radius: 13.5%;
+	margin-left: 50px;
+	width: 240px;
+	height: 240px;
+	object-fit: cover;
+	flex-shrink: 0
+}
+
+.content {
+	width: 54%;
+	margin: 0 auto;
+	line-height: 2.9;
+	font-size: 1.6em
+}
+
+@media ( max-width :768px) {
+	.content-wrapper {
+		width: 80%;
+		padding: 20px;
+		flex-direction: row;
+		flex-wrap: nowrap
+	}
+	.content-wrapper img {
+		margin: 0 20px;
+		width: 100px;
+		height: 100px
+	}
+	.content-wrapper p {
+		margin-top: 0;
+		width: auto;
+		text-align: left
+	}
+	.content {
+		width: 90%
+	}
+	header .logo {
+		font-size: 1.4rem
+	}
+	header nav a {
+		font-size: .8rem;
+		margin-right: 10px
+	}
+	footer .right {
+		flex-direction: column;
+		gap: 7px
+	}
+}
+
+@media ( max-width :480px) {
+	.content-wrapper {
+		width: 100%;
+		flex-direction: column;
+		align-items: center
+	}
+	.content-wrapper img {
+		width: 100px;
+		height: 100px;
+		margin-left: 0
+	}
+	.content-wrapper p {
+		width: auto;
+		text-align: left
+	}
+	.content {
+		width: 100%;
+		font-size: 14px;
+		line-height: 2.5
+	}
+	header .logo {
+		font-size: 1.2rem
+	}
+	header nav {
+		flex-direction: column;
+		align-items: center
+	}
+	header nav a {
+		font-size: .7rem;
+		margin-right: 5px;
+		margin-bottom: 5px
+	}
+	footer .center {
+		margin-left: 0
+	}
+}
+</style>
+<body>
+	<header>
+		<div class="logo">
+			Memory <span>Film</span>
+		</div>
+		<!-- 네비게이션 바 포함 -->
+		<div th:replace="fragments/navBar :: navBarFragment"></div>
+	</header>
+	<main>
+		<h1 style="margin-bottom: 8px;">Memory Film 소개</h1>
+		<strong>
+			<p>Memory Film은 필름 카메라로 찍은 사진을 현상 후 보관해 관리하고, 사람들과 찍은 사진을 공유하는
+				공간입니다.</p>
+		</strong>
+		<div class="content-wrapper">
+			<p>
+				안녕하세요.<br> Memory Film 웹 사이트를 개발한 정현지입니다.<br> 제가 이 사이트를 만든
+				이유를 설명드리겠습니다.
+			</p>
+			<img th:src="@{/imgs/about/IntroduceImg.jpg}" alt="Developer Photo">
+		</div>
+		<p class="content">
+			필름 카메라에 관심이 생겨, 카메라를 구매 후 추억을 남기며 사진을 찍으러 다녔습니다.<br> 가족, 친구 또는
+			풍경 등을 찍으며 제 추억을 기록했습니다. 보통 필름 현상 후 필름은 앨범에 관리하고 현상한 이미지 파일은 갤러리에 저장해
+			관리했으나 일반 카메라와 필름 카메라로 찍은 사진들의<br>구분이 어려워 구분할 공간이 있으면 좋겠다 라는 생각이
+			들었고, 필름 카메라에 관심을 가진 <br>사람들끼리의 정보 공유하는 공간도 있으면 하는 바램이 생겨 제작하게
+			되었습니다.
+		</p>
+	</main>
+	<!-- 푸터 포함 -->
+	<div th:replace="fragments/footer :: footerFragment"></div>
+	<script th:src="@{/js/home/navBarColor.js}"></script>
+</body>
+</html>
