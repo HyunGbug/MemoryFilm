@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.film.www.mapper.login.LoginMapper"
+        xmlns="http://mybatis.org/schema/mybatis-mapper"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://mybatis.org/schema/mybatis-mapper
+                            file:///path/to/local/mybatis-mapper-3.xsd">
+
+   <select id="countById" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM users WHERE id = #{id}
+    </select>
+
+    <select id="countByUsername" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM users WHERE username = #{username}
+    </select>
+
+    <select id="countByEmail" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM users WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="com.example.demo.domain.User">
+        INSERT INTO users (id, username, email, password, created_at)
+        VALUES (#{id}, #{username}, #{email}, #{password}, NOW())
+    </insert>
+</mapper>
+

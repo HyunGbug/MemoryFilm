@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://mybatis.org/schema/mybatis-3-config"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://mybatis.org/schema/mybatis-3-config
+                                    http://mybatis.org/schema/mybatis-mapper-3.xsd">
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/yourdatabase"/>
+                <property name="username" value="yourusername"/>
+                <property name="password" value="yourpassword"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper resource="mapper/login/LoginMapper.xml"/>
+    </mappers>
+</configuration>
