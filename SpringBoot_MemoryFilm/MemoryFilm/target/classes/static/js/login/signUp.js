@@ -41,17 +41,21 @@ function validateId(callback) {
 	}
 }
 
-// 비동기 요청을 콜백 함수로 처리하는 예제 > check-id엔드포인트에 get요청을 보내 요처어 url에 아이디를 쿼리 파라미터로 포함시킨다.
+// 아이디 중복 확인 요청
 function checkDuplicateId(id, callback) {
-	fetch(`${contextPath}/check-id.user?id=${encodeURIComponent(id)}`) //fetch API사용해 check-id.do를 Controller로 보내 db와 검증
-		.then(response => response.json())
+	fetch('/auth/check-id', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(id)
+	})
+		.then(response => response.text())
 		.then(data => {
-			console.log('아이디 중복 체크 응답:', data); // 디버깅 메시지 추가
-			if (data.isDuplicate) {
-				alert('해당 아이디는 이미 존재하므로, 다른 아이디를 입력해주세요.');
+			console.log('아이디 중복 체크 응답:', data);
+			if (data === "아이디가 이미 존재합니다.") {
+				alert(data);
 				callback(false);
 			} else {
-				alert('사용 가능한 아이디 입니다.');
+				alert(data);
 				callback(true);
 			}
 		})
@@ -61,7 +65,6 @@ function checkDuplicateId(id, callback) {
 		});
 }
 
-
 //닉네임 중복 확인
 document.getElementById('checkUsernameBtn').addEventListener('click', function() {
 	validateUsername(function(isValid) {
@@ -69,7 +72,7 @@ document.getElementById('checkUsernameBtn').addEventListener('click', function()
 	});
 });
 
-// 닉네임 검증 - 한글은 한글 한 글자가 문자로 간주되기 때문에 정규식에 포함 x
+// 닉네임 검증
 function validateUsername(callback) {
 	const username = document.getElementById('username').value;
 	const usernameRegex = /^[a-zA-Z0-9가-힣_]+$/; // 영어, 한글, 숫자, 밑줄
@@ -85,16 +88,21 @@ function validateUsername(callback) {
 	}
 }
 
+// 닉네임 중복 확인 요청
 function checkDuplicateUsername(username, callback) {
-	fetch(`${contextPath}/check-username.user?username=${encodeURIComponent(username)}`)//fetch API 이용
-		.then(response => response.json())
+	fetch('/auth/check-username', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(username)
+	})
+		.then(response => response.text())
 		.then(data => {
-			console.log('닉네임 중복 체크 응답:', data); // 디버깅 메시지 추가
-			if (data.isDuplicate) {
-				alert('해당 닉네임은 이미 존재하므로, 다른 닉네임을 입력해주세요.');
+			console.log('닉네임 중복 체크 응답:', data);
+			if (data === "닉네임이 이미 존재합니다.") {
+				alert(data);
 				callback(false);
 			} else {
-				alert('사용 가능한 닉네임 입니다.');
+				alert(data);
 				callback(true);
 			}
 		})
@@ -111,6 +119,7 @@ document.getElementById('checkEmailBtn').addEventListener('click', function() {
 	});
 });
 
+// 이메일 검증
 function validateEmail(callback) {
 	const email = document.getElementById('email').value;
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -123,16 +132,21 @@ function validateEmail(callback) {
 	}
 }
 
+// 이메일 중복 확인 요청
 function checkDuplicateEmail(email, callback) {
-	fetch(`${contextPath}/check-email.user?email=${encodeURIComponent(email)}`)
-		.then(response => response.json())
+	fetch('/auth/check-email', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(email)
+	})
+		.then(response => response.text())
 		.then(data => {
-			console.log('이메일 중복 체크 응답:', data); // 디버깅 메시지 추가
-			if (data.isDuplicate) {
-				alert('해당 이메일은 이미 존재하므로, 다른 이메일을 입력해주세요.');
+			console.log('이메일 중복 체크 응답:', data);
+			if (data === "이메일이 이미 존재합니다.") {
+				alert(data);
 				callback(false);
 			} else {
-				alert('사용 가능한 이메일 입니다.');
+				alert(data);
 				callback(true);
 			}
 		})
@@ -155,37 +169,37 @@ function validatePassword() {
 
 	if (password !== passwordChk) {
 		alert('비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-		return false; // 회원가입을 막는다.
+		return false;
 	}
-	return true; // 회원가입을 진행
+	return true;
 }
+
 
 
 // 폼 제출 시 validateForm 호출
 document.getElementById('form').addEventListener('submit', function(event) {
 	event.preventDefault();
-	console.log("회원가입 폼 제출 이벤트 발생");
 	validateForm(function(isValid) {
-		console.log("폼 검증 결과:", isValid);
 		if (isValid) {
-			const formData = new FormData(event.target);
+			const formData = new FormData(event.target); // 전체 폼 데이터를 FormData로 전송
 
-			fetch(event.target.action, {
+			//서버의 회워나입 API로 요청 보내기
+			fetch('/auth/signup', {
 				method: 'POST',
 				body: formData
 			})
 				.then(response => response.json())
 				.then(data => {
 					if (data.success) {
-						alert(data.message);
-						location.href = contextPath + '/Html/LoginForm_UI.jsp';
+						alert('회원가입에 성공했습니다.');
+						location.href = '/login'; //회원가입 후 로그인 페이지로 이동
 					} else {
 						alert('회원가입에 실패했습니다. 다시 시도해주세요.');
 					}
 				})
 				.catch(error => {
 					console.error('Error:', error);
-					alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+					alert('오류료 인해 회원가입에 실패했습니다. 다시 시도해주세요.');
 				});
 		}
 	});
@@ -194,12 +208,17 @@ document.getElementById('form').addEventListener('submit', function(event) {
 // 아이디, 닉네임, 비밀번호 모두 검증 완료해야지만 회원가입 완료
 function validateForm(callback) {
 	if (!idValid) {
-		alert('아이디를 확인해주세요.');
+		alert('아이디의 유효성을 체크해주세요.');
 		callback(false);
 		return;
 	}
 	if (!usernameValid) {
-		alert('닉네임을 확인해주세요.');
+		alert('닉네임의 유효성을 체크해주세요.');
+		callback(false);
+		return;
+	}
+	if (!emailValid) {
+		alert('이메일의 유효성을 체크해주세요.');
 		callback(false);
 		return;
 	}
