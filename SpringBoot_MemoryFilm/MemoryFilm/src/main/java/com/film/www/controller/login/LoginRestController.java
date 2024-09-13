@@ -49,7 +49,7 @@ public class LoginRestController {
             // User 엔티티로 변환 - 프로필 경로 빼고
             User user = convertToEntity(userDto);
 
-            // 프로필 이미지 처리
+            // 프로필 이미지 처리 및 디버깅 로그 출력
             String profileImagePath = null;
             if (profilePicture != null && !profilePicture.isEmpty()) {
                 profileImagePath = imageService.saveProfileImage(profilePicture, user.getUserId(), request);
@@ -57,7 +57,7 @@ public class LoginRestController {
 
             // 프로필 이미지 경로 설정 (사용자가 이미지를 업로드하지 않으면 기본 이미지 사용)
             user.setProfileImageUrl(profileImagePath != null ? profileImagePath : "/imgs/signUp/defaultProfile.png");
-            
+
             // 사용자 정보를 DB에 저장
             loginService.signup(user);
 
